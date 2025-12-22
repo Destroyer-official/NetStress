@@ -1,0 +1,131 @@
+# ============================================
+# NetStress - Clean Professional GitHub Repo
+# ============================================
+
+# Python Cache
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.hypothesis/
+
+# Build & Distribution
+build/
+dist/
+*.egg-info/
+*.egg
+*.whl
+
+# Virtual Environments
+.env
+.venv
+env/
+venv/
+
+# IDE & Editors
+.idea/
+.vscode/
+*.swp
+*~
+
+# OS Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ============================================
+# EXCLUDE FROM GITHUB
+# ============================================
+
+# Redundant entry points (keep only ddos.py as main entry)
+main.py
+netstress_cli.py
+
+# Development folders
+archive/
+unnecessary/
+rio_test/
+-p/
+
+# Old/deprecated folders
+bin/
+config/
+
+# Runtime data
+audit_logs/
+compliance_reports/
+.netstress/
+logs/
+
+# Model files (large)
+models/
+
+# Benchmark results
+benchmarks/results/
+
+# Old/internal documentation
+docs/archived/
+docs/reports/
+docs/AUDIT_RESPONSE.md
+docs/AUDIT_SUMMARY.md
+docs/EXECUTIVE_SUMMARY.md
+docs/FILE_INVENTORY.md
+docs/PROJECT_ANALYSIS.md
+docs/PROJECT_TITAN_COMPLETE.md
+docs/TITAN_UPGRADE_PLAN.md
+docs/ROADMAP.md
+
+# Logs
+*.log
+attack.log
+
+# Checkpoint reports
+*_checkpoint_report.md
+*_checkpoint_summary.md
+linux_afxdp_checkpoint_report.md
+macos_network_framework_checkpoint_report.md
+
+# Root test files
+test_binary.py
+test_checkpoint.py
+test_clean_system.py
+test_recon_module.py
+
+# Build scripts
+build_all_platforms.py
+build_binary.py
+build_linux.sh
+run_binary_tests.py
+verify_binary_deployment.py
+verify_standalone_binary.py
+verify_static_linking.py
+make_scripts_executable.sh
+
+# PyOxidizer (keep pyoxidizer.bzl for single-binary builds)
+simple_pyoxidizer.bzl
+
+# Native build artifacts (keep source, exclude compiled)
+native/rust_engine/target/
+native/c_driver/*.o
+*.so
+*.dll
+*.dylib
+
+# Keep .exe for Windows scripts but exclude compiled binaries
+dist/*.exe
+
+# Secrets
+config/production.conf
+*.pem
+*.key
+*.crt
+
+# Temp files
+tmp/
+temp/
+*.tmp
+*.bak
+
+# Network captures
+*.pcap
+*.pcapng

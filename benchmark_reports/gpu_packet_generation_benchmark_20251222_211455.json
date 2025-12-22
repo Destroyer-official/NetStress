@@ -1,0 +1,78 @@
+{
+  "timestamp": "2025-12-22T21:14:55.427550",
+  "platform": "Windows",
+  "cpu_info": "AMD64 Family 23 Model 24 Stepping 1, AuthenticAMD",
+  "memory_gb": 13.927059173583984,
+  "gpu_available": false,
+  "gpu_count": 0,
+  "gpu_models": [],
+  "gpu_memory_gb": [],
+  "cuda_available": false,
+  "cuda_version": "N/A",
+  "gpudirect_available": false,
+  "test_duration": 2.0,
+  "packet_size": 1472,
+  "template_count": 1000000,
+  "gpu_memory_used_gb": 1.3709068298339844,
+  "packets_generated": 2000000,
+  "bytes_generated": 2944000000,
+  "duration_actual": 2.300163984298706,
+  "pps": 869503.2239667805,
+  "gbps": 10.239269965432808,
+  "gpu_utilization_percent": 0.0,
+  "gpu_memory_utilization_percent": 0.0,
+  "cpu_usage_percent": 90.0,
+  "meets_50m_pps_target": false,
+  "performance_grade": "POOR",
+  "hardware_requirements": {
+    "minimum_requirements": {
+      "gpu": "NVIDIA GTX 1060 or AMD RX 580 (4GB+ VRAM)",
+      "cuda": "CUDA 11.0+ or ROCm 4.0+",
+      "cpu": "Multi-core processor (4+ cores)",
+      "memory": "16GB system RAM",
+      "pcie": "PCIe 3.0 x16 slot"
+    },
+    "recommended_requirements": {
+      "gpu": "NVIDIA RTX 4080/4090 or AMD RX 7900 XTX (16GB+ VRAM)",
+      "cuda": "CUDA 12.0+ with latest drivers",
+      "cpu": "Intel Core i7/i9 or AMD Ryzen 7/9",
+      "memory": "32GB+ system RAM",
+      "pcie": "PCIe 4.0 x16 slot"
+    },
+    "optimal_requirements": {
+      "gpu": "NVIDIA H100, A100, or RTX 6000 Ada (48GB+ VRAM)",
+      "cuda": "CUDA 12.0+ with Tensor Core support",
+      "cpu": "Intel Xeon or AMD EPYC (16+ cores)",
+      "memory": "128GB+ system RAM",
+      "pcie": "PCIe 5.0 x16 with GPUDirect support",
+      "networking": "100GbE NIC with GPUDirect RDMA"
+    },
+    "cuda_features": {
+      "warp_execution": "32-thread warp parallel execution",
+      "shared_memory": "Fast on-chip shared memory",
+      "texture_memory": "Cached texture memory for templates",
+      "constant_memory": "Read-only constant memory",
+      "unified_memory": "Unified CPU/GPU memory addressing"
+    },
+    "gpudirect_features": {
+      "rdma": "Direct GPU-to-NIC memory transfers",
+      "p2p": "GPU-to-GPU direct memory access",
+      "async_copy": "Asynchronous memory copy operations",
+      "zero_copy": "Zero-copy networking with compatible NICs"
+    },
+    "performance_factors": {
+      "memory_bandwidth": "GPU memory bandwidth (TB/s)",
+      "compute_units": "Number of CUDA cores or stream processors",
+      "tensor_cores": "AI acceleration units (if available)",
+      "memory_size": "VRAM size for packet template storage",
+      "thermal_design": "Cooling solution for sustained performance"
+    },
+    "known_limitations": {
+      "driver_compatibility": "Requires latest GPU drivers",
+      "cuda_toolkit": "CUDA toolkit installation required",
+      "memory_fragmentation": "Large allocations may fail",
+      "thermal_throttling": "Performance may decrease under load",
+      "power_consumption": "High-end GPUs require adequate PSU"
+    }
+  }
+}

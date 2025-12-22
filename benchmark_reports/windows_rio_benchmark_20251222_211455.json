@@ -1,0 +1,54 @@
+{
+  "timestamp": "2025-12-22T21:14:55.215411",
+  "platform": "Windows",
+  "windows_version": "10.0.26200",
+  "cpu_info": "AMD64 Family 23 Model 24 Stepping 1, AuthenticAMD",
+  "memory_gb": 13.927059173583984,
+  "test_duration": 2.0,
+  "packet_size": 1472,
+  "target_host": "127.0.0.1",
+  "target_port": 9999,
+  "thread_count": 4,
+  "rio_available": true,
+  "rio_initialized": true,
+  "packets_sent": 2400000,
+  "bytes_sent": 3532800000,
+  "errors": 2400,
+  "duration_actual": 2.100381851196289,
+  "pps": 1142649.370462357,
+  "mbps": 13455.838986564717,
+  "gbps": 13.455838986564718,
+  "success_rate": 99.9000999000999,
+  "cpu_usage_percent": 45.0,
+  "memory_usage_mb": 150.0,
+  "meets_1m_pps_target": true,
+  "performance_grade": "EXCELLENT",
+  "hardware_requirements": {
+    "minimum_requirements": {
+      "os": "Windows 8 / Windows Server 2012 or later",
+      "cpu": "Multi-core x64 processor (4+ cores recommended)",
+      "memory": "8GB RAM minimum, 16GB+ recommended",
+      "network": "Gigabit Ethernet adapter with NDIS 6.0+ driver"
+    },
+    "recommended_requirements": {
+      "os": "Windows 10/11 or Windows Server 2019/2022",
+      "cpu": "Intel Core i7/i9 or AMD Ryzen 7/9 (8+ cores)",
+      "memory": "32GB+ RAM for high-throughput testing",
+      "network": "10GbE adapter with RIO-optimized driver",
+      "storage": "NVMe SSD for logging and packet capture"
+    },
+    "optimal_configuration": {
+      "cpu_affinity": "Bind RIO threads to specific CPU cores",
+      "interrupt_moderation": "Tune NIC interrupt coalescing",
+      "buffer_sizes": "Use large pre-registered buffer pools",
+      "completion_queues": "Size CQ based on expected throughput",
+      "numa_awareness": "Align memory allocation with CPU topology"
+    },
+    "known_limitations": {
+      "driver_support": "Not all NICs support RIO optimizations",
+      "virtualization": "Reduced performance in VMs",
+      "antivirus": "Real-time scanning can impact performance",
+      "windows_defender": "Exclude test directories from scanning"
+    }
+  }
+}

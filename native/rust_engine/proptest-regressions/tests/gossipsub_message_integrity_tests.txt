@@ -1,0 +1,10 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc 74638da271712b20c7d22a24eb5f8e788edfcf950ce52e0af09acc78a4c973e1 # shrinks to message_count = 1
+cc 0cbf7ecdcf630baaefd2001cf88bcbd22fb0f3f594f7ffe92df831cda912ccb2 # shrinks to command = AttackCommand { target: "-", port: 1, protocol: "udp", duration: 1, rate: 1, swarm_id: "A", timestamp: 1766376776 }
+cc ebf89667a94c7408c49243f68ce4700d4e65fb03a51072103d13e04abd99ebce # shrinks to message_id_str = "AAaaA0a0AaaaaaaA"
+cc d64e4b72303526cb9f84afa4d9a0bd918e119b56fdbfc1b91bfc7c7c2fe915ce # shrinks to pulse_command = PulseCommand { pulse_id: 0, scheduled_time: 0, duration: 1s, intensity: 0.0 }

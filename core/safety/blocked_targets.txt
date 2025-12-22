@@ -1,0 +1,43 @@
+# Blocked Targets Configuration
+# This file contains targets that should never be attacked
+# One target per line, supports IP addresses and domains
+# Lines starting with # are comments
+
+# Major cloud providers
+amazonaws.com
+azure.com
+googlecloud.com
+cloudflare.com
+
+# Major tech companies
+google.com
+microsoft.com
+apple.com
+facebook.com
+meta.com
+twitter.com
+x.com
+linkedin.com
+github.com
+gitlab.com
+
+# Critical infrastructure
+8.8.8.8
+8.8.4.4
+1.1.1.1
+1.0.0.1
+
+# Government domains (examples)
+gov
+.mil
+.edu
+
+# Banking and financial (examples)
+paypal.com
+stripe.com
+visa.com
+mastercard.com
+
+# Add your organization's production systems here
+# production.yourcompany.com
+# api.yourcompany.com

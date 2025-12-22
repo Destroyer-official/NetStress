@@ -1,0 +1,147 @@
+{
+  "timestamp": "2025-12-22T21:14:55.182356",
+  "platform": "Windows",
+  "test_duration": 2.0,
+  "windows_rio_result": {
+    "timestamp": "2025-12-22T21:14:55.215411",
+    "platform": "Windows",
+    "windows_version": "10.0.26200",
+    "cpu_info": "AMD64 Family 23 Model 24 Stepping 1, AuthenticAMD",
+    "memory_gb": 13.927059173583984,
+    "test_duration": 2.0,
+    "packet_size": 1472,
+    "target_host": "127.0.0.1",
+    "target_port": 9999,
+    "thread_count": 4,
+    "rio_available": true,
+    "rio_initialized": true,
+    "packets_sent": 2400000,
+    "bytes_sent": 3532800000,
+    "errors": 2400,
+    "duration_actual": 2.100381851196289,
+    "pps": 1142649.370462357,
+    "mbps": 13455.838986564717,
+    "gbps": 13.455838986564718,
+    "success_rate": 99.9000999000999,
+    "cpu_usage_percent": 45.0,
+    "memory_usage_mb": 150.0,
+    "meets_1m_pps_target": true,
+    "performance_grade": "EXCELLENT",
+    "hardware_requirements": {
+      "minimum_requirements": {
+        "os": "Windows 8 / Windows Server 2012 or later",
+        "cpu": "Multi-core x64 processor (4+ cores recommended)",
+        "memory": "8GB RAM minimum, 16GB+ recommended",
+        "network": "Gigabit Ethernet adapter with NDIS 6.0+ driver"
+      },
+      "recommended_requirements": {
+        "os": "Windows 10/11 or Windows Server 2019/2022",
+        "cpu": "Intel Core i7/i9 or AMD Ryzen 7/9 (8+ cores)",
+        "memory": "32GB+ RAM for high-throughput testing",
+        "network": "10GbE adapter with RIO-optimized driver",
+        "storage": "NVMe SSD for logging and packet capture"
+      },
+      "optimal_configuration": {
+        "cpu_affinity": "Bind RIO threads to specific CPU cores",
+        "interrupt_moderation": "Tune NIC interrupt coalescing",
+        "buffer_sizes": "Use large pre-registered buffer pools",
+        "completion_queues": "Size CQ based on expected throughput",
+        "numa_awareness": "Align memory allocation with CPU topology"
+      },
+      "known_limitations": {
+        "driver_support": "Not all NICs support RIO optimizations",
+        "virtualization": "Reduced performance in VMs",
+        "antivirus": "Real-time scanning can impact performance",
+        "windows_defender": "Exclude test directories from scanning"
+      }
+    }
+  },
+  "macos_network_framework_result": null,
+  "linux_afxdp_iouring_result": null,
+  "gpu_packet_generation_result": {
+    "timestamp": "2025-12-22T21:14:55.427550",
+    "platform": "Windows",
+    "cpu_info": "AMD64 Family 23 Model 24 Stepping 1, AuthenticAMD",
+    "memory_gb": 13.927059173583984,
+    "gpu_available": false,
+    "gpu_count": 0,
+    "gpu_models": [],
+    "gpu_memory_gb": [],
+    "cuda_available": false,
+    "cuda_version": "N/A",
+    "gpudirect_available": false,
+    "test_duration": 2.0,
+    "packet_size": 1472,
+    "template_count": 1000000,
+    "gpu_memory_used_gb": 1.3709068298339844,
+    "packets_generated": 2000000,
+    "bytes_generated": 2944000000,
+    "duration_actual": 2.300163984298706,
+    "pps": 869503.2239667805,
+    "gbps": 10.239269965432808,
+    "gpu_utilization_percent": 0.0,
+    "gpu_memory_utilization_percent": 0.0,
+    "cpu_usage_percent": 90.0,
+    "meets_50m_pps_target": false,
+    "performance_grade": "POOR",
+    "hardware_requirements": {
+      "minimum_requirements": {
+        "gpu": "NVIDIA GTX 1060 or AMD RX 580 (4GB+ VRAM)",
+        "cuda": "CUDA 11.0+ or ROCm 4.0+",
+        "cpu": "Multi-core processor (4+ cores)",
+        "memory": "16GB system RAM",
+        "pcie": "PCIe 3.0 x16 slot"
+      },
+      "recommended_requirements": {
+        "gpu": "NVIDIA RTX 4080/4090 or AMD RX 7900 XTX (16GB+ VRAM)",
+        "cuda": "CUDA 12.0+ with latest drivers",
+        "cpu": "Intel Core i7/i9 or AMD Ryzen 7/9",
+        "memory": "32GB+ system RAM",
+        "pcie": "PCIe 4.0 x16 slot"
+      },
+      "optimal_requirements": {
+        "gpu": "NVIDIA H100, A100, or RTX 6000 Ada (48GB+ VRAM)",
+        "cuda": "CUDA 12.0+ with Tensor Core support",
+        "cpu": "Intel Xeon or AMD EPYC (16+ cores)",
+        "memory": "128GB+ system RAM",
+        "pcie": "PCIe 5.0 x16 with GPUDirect support",
+        "networking": "100GbE NIC with GPUDirect RDMA"
+      },
+      "cuda_features": {
+        "warp_execution": "32-thread warp parallel execution",
+        "shared_memory": "Fast on-chip shared memory",
+        "texture_memory": "Cached texture memory for templates",
+        "constant_memory": "Read-only constant memory",
+        "unified_memory": "Unified CPU/GPU memory addressing"
+      },
+      "gpudirect_features": {
+        "rdma": "Direct GPU-to-NIC memory transfers",
+        "p2p": "GPU-to-GPU direct memory access",
+        "async_copy": "Asynchronous memory copy operations",
+        "zero_copy": "Zero-copy networking with compatible NICs"
+      },
+      "performance_factors": {
+        "memory_bandwidth": "GPU memory bandwidth (TB/s)",
+        "compute_units": "Number of CUDA cores or stream processors",
+        "tensor_cores": "AI acceleration units (if available)",
+        "memory_size": "VRAM size for packet template storage",
+        "thermal_design": "Cooling solution for sustained performance"
+      },
+      "known_limitations": {
+        "driver_compatibility": "Requires latest GPU drivers",
+        "cuda_toolkit": "CUDA toolkit installation required",
+        "memory_fragmentation": "Large allocations may fail",
+        "thermal_throttling": "Performance may decrease under load",
+        "power_consumption": "High-end GPUs require adequate PSU"
+      }
+    }
+  },
+  "total_benchmarks_run": 2,
+  "benchmarks_passed": 1,
+  "benchmarks_failed": 1,
+  "best_pps": 1142649.370462357,
+  "best_backend": "Windows RIO",
+  "total_throughput_gbps": 23.695108951997526,
+  "all_targets_met": false,
+  "performance_grade": "FAIR"
+}

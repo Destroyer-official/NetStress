@@ -1,0 +1,75 @@
+name: Build Native Engine Wheels
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch: # Allow manual trigger
+
+jobs:
+  build-wheels:
+    name: Build wheels on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install Rust
+        uses: dtolnay/rust-action@stable
+
+      - name: Install maturin
+        run: pip install maturin
+
+      - name: Build wheel (Linux)
+        if: matrix.os == 'ubuntu-latest'
+        working-directory: native/rust_engine
+        run: |
+          maturin build --release --features sendmmsg,io_uring
+
+      - name: Build wheel (Windows)
+        if: matrix.os == 'windows-latest'
+        working-directory: native/rust_engine
+        run: |
+          maturin build --release --features iocp
+
+      - name: Build wheel (macOS)
+        if: matrix.os == 'macos-latest'
+        working-directory: native/rust_engine
+        run: |
+          maturin build --release --features kqueue
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: wheels-${{ matrix.os }}-py${{ matrix.python-version }}
+          path: native/rust_engine/target/wheels/*.whl
+
+  # Combine all wheels and upload to release
+  upload-release:
+    needs: build-wheels
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release'
+
+    steps:
+      - name: Download all wheels
+        uses: actions/download-artifact@v4
+        with:
+          path: wheels
+          pattern: wheels-*
+          merge-multiple: true
+
+      - name: Upload to Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: wheels/*.whl
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

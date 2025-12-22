@@ -1,0 +1,15 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc 722b3ecd95259afbf53e8678e60cd4193e8129e0bc24b43af4a7bbca83ad38ba # shrinks to rate = 4093, burst = 26
+cc 7fb15b1f2350f5ab8a3a6b9d7eb06a0f84f0e306a6f11d6e4c43dc807045b8c9 # shrinks to target_delay_micros = 7860
+cc 239043ddce89fdbe8ebd08491e021dee97d5ddc7c070e00dbab570dc4a8a813a # shrinks to duration_micros = 4961
+cc d804f8c85048492cf262314a116cb66ecc200f1597ae65ecca2a3c263cf1f0f1 # shrinks to rate = 2224, burst = 74
+cc 103a5f6a0ac00dbdd59fbec277dd85b1fbb8cd4619217b514a17ef896f256aef # shrinks to target_delay_micros = 6897
+cc 257177493a9cd99a7f4c34f2e75191f3e31c88652871c2605eb5884298a91979 # shrinks to base_rate = 3404, pattern = Sawtooth
+cc 6703f4a4fa4602bb9c3d246d47987bccebdf255a2f09b82e3d707d666d885310 # shrinks to duration_micros = 432
+cc d3e30e7c300852b89864f2e58a10ab61aae8a6cda9e05d9fae762f6ff0cd5fe7 # shrinks to rate = 179, burst = 1
+cc 1aa6a79ba755a2eaf8ddd60001c59c8fc1dffff859957d0e516c71b71b1e3d0c # shrinks to target_delay_micros = 1665

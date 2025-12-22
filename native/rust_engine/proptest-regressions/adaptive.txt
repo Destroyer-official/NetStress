@@ -1,0 +1,7 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc 7097df061d253b3262ea42ce1111734006e19a6995f62c0e29800dc1c8e616f1 # shrinks to cpu_usage = 0.0, memory_usage = 0.0, packet_loss = 0.0, cpu_cores = 32, total_ram = 68719476736, nic_speed = 25000

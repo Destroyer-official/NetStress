@@ -1,0 +1,106 @@
+# Makefile for NetStress C Benchmark Executables
+# Builds benchmark programs for each backend
+
+CC = gcc
+CFLAGS = -Wall -Wextra -O3 -std=c99
+LDFLAGS = -lm
+
+# Check for optional libraries
+DPDK_CFLAGS = $(shell pkg-config --cflags libdpdk 2>/dev/null)
+DPDK_LIBS = $(shell pkg-config --libs libdpdk 2>/dev/null)
+URING_LIBS = $(shell pkg-config --libs liburing 2>/dev/null || echo "")
+
+# Targets
+TARGETS = benchmark_sendmmsg benchmark_io_uring benchmark_af_xdp benchmark_dpdk
+
+.PHONY: all clean check-deps
+
+all: check-deps $(TARGETS)
+
+# Always build sendmmsg (available on Linux)
+benchmark_sendmmsg: benchmark_sendmmsg.c
+	@echo "Building sendmmsg benchmark..."
+	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS)
+
+# Build io_uring if available
+benchmark_io_uring: benchmark_io_uring.c
+	@echo "Building io_uring benchmark..."
+	@if [ -n "$(URING_LIBS)" ]; then \
+		echo "  io_uring support detected"; \
+		$(CC) $(CFLAGS) -DHAVE_IO_URING -o $@ $< $(URING_LIBS) $(LDFLAGS); \
+	else \
+		echo "  io_uring not available, building fallback"; \
+		$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS); \
+	fi
+
+# Build AF_XDP (Linux kernel 4.18+)
+benchmark_af_xdp: benchmark_af_xdp.c
+	@echo "Building AF_XDP benchmark..."
+	@if [ -f /usr/include/linux/if_xdp.h ]; then \
+		echo "  AF_XDP headers detected"; \
+		$(CC) $(CFLAGS) -DHAVE_AF_XDP -o $@ $< $(LDFLAGS); \
+	else \
+		echo "  AF_XDP not available, building fallback"; \
+		$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS); \
+	fi
+
+# Build DPDK if available
+benchmark_dpdk: benchmark_dpdk.c
+	@echo "Building DPDK benchmark..."
+	@if [ -n "$(DPDK_LIBS)" ]; then \
+		echo "  DPDK support detected"; \
+		$(CC) $(CFLAGS) $(DPDK_CFLAGS) -DHAVE_DPDK -o $@ $< $(DPDK_LIBS) $(LDFLAGS); \
+	else \
+		echo "  DPDK not available, building fallback"; \
+		$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS); \
+	fi
+
+check-deps:
+	@echo "Checking dependencies..."
+	@echo "  GCC: $(shell $(CC) --version | head -n1)"
+	@if [ -n "$(DPDK_LIBS)" ]; then \
+		echo "  DPDK: Available"; \
+	else \
+		echo "  DPDK: Not available (install libdpdk-dev)"; \
+	fi
+	@if [ -n "$(URING_LIBS)" ]; then \
+		echo "  io_uring: Available"; \
+	else \
+		echo "  io_uring: Not available (install liburing-dev)"; \
+	fi
+	@if [ -f /usr/include/linux/if_xdp.h ]; then \
+		echo "  AF_XDP: Available"; \
+	else \
+		echo "  AF_XDP: Not available (kernel 4.18+ required)"; \
+	fi
+	@echo ""
+
+clean:
+	rm -f $(TARGETS)
+
+install: all
+	@echo "Installing benchmark executables..."
+	@mkdir -p ../bin
+	@cp $(TARGETS) ../bin/
+	@echo "Benchmarks installed to ../bin/"
+
+# Test targets
+test-sendmmsg: benchmark_sendmmsg
+	@echo "Testing sendmmsg benchmark..."
+	./benchmark_sendmmsg --duration 1
+
+test-io-uring: benchmark_io_uring
+	@echo "Testing io_uring benchmark..."
+	./benchmark_io_uring --duration 1
+
+test-af-xdp: benchmark_af_xdp
+	@echo "Testing AF_XDP benchmark..."
+	./benchmark_af_xdp --duration 1
+
+test-dpdk: benchmark_dpdk
+	@echo "Testing DPDK benchmark..."
+	@echo "Note: DPDK requires root privileges and proper setup"
+	@echo "Run manually: sudo ./benchmark_dpdk --duration 1"
+
+test: test-sendmmsg test-io-uring test-af-xdp
+	@echo "Basic benchmark tests completed"

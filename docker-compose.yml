@@ -1,0 +1,191 @@
+# Docker Compose configuration for Advanced DDoS Testing Framework
+version: "3.8"
+
+services:
+  # Main framework service
+  ddos-framework:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+      args:
+        BUILD_DATE: ${BUILD_DATE:-$(date -u +'%Y-%m-%dT%H:%M:%SZ')}
+        VERSION: ${VERSION:-1.0.0}
+        VCS_REF: ${VCS_REF:-$(git rev-parse --short HEAD)}
+    image: ddos-framework:${VERSION:-latest}
+    container_name: ddos-framework-main
+    restart: unless-stopped
+    ports:
+      - "8000:8000" # API server
+      - "8080:8080" # Web GUI
+      - "8443:8443" # HTTPS Web GUI
+    volumes:
+      - ./config:/app/config:ro
+      - ./logs:/app/logs
+      - ./data:/app/data
+      - ./results:/app/results
+      - framework-cache:/app/cache
+    environment:
+      - DDOS_MODE=api
+      - DDOS_LOG_LEVEL=INFO
+      - DDOS_CONFIG_FILE=/app/config/config.yaml
+    networks:
+      - ddos-network
+    depends_on:
+      - redis
+      - postgres
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Web GUI service
+  ddos-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: production
+    image: ddos-framework:${VERSION:-latest}
+    container_name: ddos-framework-web
+    restart: unless-stopped
+    ports:
+      - "3000:8080"
+    volumes:
+      - ./config:/app/config:ro
+      - ./logs:/app/logs
+    environment:
+      - DDOS_MODE=web
+      - DDOS_LOG_LEVEL=INFO
+    networks:
+      - ddos-network
+    depends_on:
+      - ddos-framework
+    command: ["ddos-web", "--host", "0.0.0.0", "--port", "8080"]
+
+  # Redis for caching and session management
+  redis:
+    image: redis:7-alpine
+    container_name: ddos-framework-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    networks:
+      - ddos-network
+    command: redis-server --appendonly yes --maxmemory 512mb --maxmemory-policy allkeys-lru
+
+  # PostgreSQL for data storage
+  postgres:
+    image: postgres:15-alpine
+    container_name: ddos-framework-postgres
+    restart: unless-stopped
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./scripts/init-db.sql:/docker-entrypoint-initdb.d/init-db.sql:ro
+    environment:
+      - POSTGRES_DB=ddos_framework
+      - POSTGRES_USER=ddos_user
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD:-ddos_secure_password}
+    networks:
+      - ddos-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ddos_user -d ddos_framework"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  # Monitoring with Prometheus
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: ddos-framework-prometheus
+    restart: unless-stopped
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus-data:/prometheus
+    networks:
+      - ddos-network
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--web.console.libraries=/etc/prometheus/console_libraries"
+      - "--web.console.templates=/etc/prometheus/consoles"
+      - "--storage.tsdb.retention.time=200h"
+      - "--web.enable-lifecycle"
+
+  # Grafana for visualization
+  grafana:
+    image: grafana/grafana:latest
+    container_name: ddos-framework-grafana
+    restart: unless-stopped
+    ports:
+      - "3001:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASSWORD:-admin}
+      - GF_USERS_ALLOW_SIGN_UP=false
+    networks:
+      - ddos-network
+    depends_on:
+      - prometheus
+
+  # Development service (optional)
+  ddos-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: development
+    image: ddos-framework:dev
+    container_name: ddos-framework-dev
+    restart: "no"
+    ports:
+      - "8001:8000"
+      - "8081:8080"
+    volumes:
+      - .:/app
+      - ./config:/app/config
+      - ./logs:/app/logs
+      - ./data:/app/data
+      - ./results:/app/results
+    environment:
+      - DDOS_MODE=interactive
+      - DDOS_LOG_LEVEL=DEBUG
+      - PYTHONPATH=/app
+    networks:
+      - ddos-network
+    depends_on:
+      - redis
+      - postgres
+    profiles:
+      - dev
+    stdin_open: true
+    tty: true
+
+networks:
+  ddos-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16
+
+volumes:
+  framework-cache:
+    driver: local
+  redis-data:
+    driver: local
+  postgres-data:
+    driver: local
+  prometheus-data:
+    driver: local
+  grafana-data:
+    driver: local
